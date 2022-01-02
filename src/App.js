@@ -4,12 +4,14 @@ import "./App.css";
 import Header from "./Header";
 import Home from "./Home";
 import SearchBook from "./SearchBook";
-import {getAll, update} from './BooksAPI';
+import { getAll, update } from "./BooksAPI";
+// import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 class BooksApp extends React.Component {
   constructor() {
     super();
     this.updateShelf = this.updateShelf.bind(this);
+    this.showSearchHandler = this.showSearchHandler.bind(this);
     this.state = {
       /**
        * TODO: Instead of using this state variable to keep track of which page
@@ -21,53 +23,76 @@ class BooksApp extends React.Component {
       read: [],
       wantToRead: [],
       showSearchPage: false,
-      books : []
+      books: [],
     };
   }
   componentDidMount() {
-
-    getAll().then((res) => this.setState({
-      ...this.state,
-      books : res,
-      currentlyReading : res.filter( book => book.shelf === "currentlyReading"),
-      read : res.filter( book => book.shelf === "read"),
-      wantToRead : res.filter( book => book.shelf === "wantToRead"),
-    }))
+    getAll().then((res) =>
+      this.setState({
+        ...this.state,
+        books: res,
+        currentlyReading: res.filter(
+          (book) => book.shelf === "currentlyReading"
+        ),
+        read: res.filter((book) => book.shelf === "read"),
+        wantToRead: res.filter((book) => book.shelf === "wantToRead"),
+      })
+    );
   }
 
-
   updateShelf = (fromShelf, toShelf, book) => {
-
     book.shelf = toShelf;
-    if(toShelf === "none") {
-      return update(toShelf, book).then(res => {
+    if (toShelf === "none") {
+      return update(toShelf, book).then((res) => {
         this.setState({
           ...this.state,
-          [fromShelf] : [...this.state[fromShelf].filter(item => item.id !== book.id)],
-        })
-      })
+          [fromShelf]: [
+            ...this.state[fromShelf].filter((item) => item.id !== book.id),
+          ],
+        });
+      });
     }
-    if(toShelf !== fromShelf) {
-      update(toShelf, book).then(res => {
+    if (toShelf !== fromShelf) {
+      update(toShelf, book).then((res) => {
         this.setState({
           ...this.state,
-          [fromShelf] : [...this.state[fromShelf].filter(item => item.id !== book.id)],
-          [toShelf] : [...this.state[toShelf], book]
-        })
-
-      })
+          [fromShelf]: [
+            ...this.state[fromShelf].filter((item) => item.id !== book.id),
+          ],
+          [toShelf]: [...this.state[toShelf], book],
+        });
+      });
     }
-    
-    
-
   };
 
+  showSearchHandler = () => {
+    this.setState({ showSearchPage: true });
+  }
+
+  closeSearchHandler = () =>{
+    this.setState({ showSearchPage: false });
+  }
+
   render() {
-    console.log(this.state)
+    console.log(this.state);
     return (
+      // <Router>
+      //   <div>
+      //     {/* A <Switch> looks through its children <Route>s and
+      //       renders the first one that matches the current URL. */}
+      //     <Switch>
+      //       <Route path="/searchbook">
+      //         <SearchBook />
+      //       </Route>
+      //       <Route path="/">
+      //         <Home />
+      //       </Route>
+      //     </Switch>
+      //   </div>
+      // </Router>
       <div className="app">
         {this.state.showSearchPage ? (
-          <SearchBook />
+          <SearchBook closeSearch={this.closeSearchHandler}/>
         ) : (
           <div className="list-books">
             <Header />
@@ -76,12 +101,8 @@ class BooksApp extends React.Component {
               read={this.state.read}
               wantToRead={this.state.wantToRead}
               updateShelf = {this.updateShelf}
+              showSearchPage = {this.showSearchHandler}
             />
-            <div className="open-search">
-              <button onClick={() => this.setState({ showSearchPage: true })}>
-                Add a book
-              </button>
-            </div>
           </div>
         )}
       </div>
