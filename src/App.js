@@ -1,13 +1,12 @@
 import React from "react";
 // import * as BooksAPI from './BooksAPI'
 import "./App.css";
-import Header from "./Header";
 import Home from "./Home";
 import SearchBook from "./SearchBook";
 import { getAll, update } from "./BooksAPI";
-// import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-class BooksApp extends React.Component {
+class App extends React.Component {
   constructor() {
     super();
     this.updateShelf = this.updateShelf.bind(this);
@@ -67,47 +66,35 @@ class BooksApp extends React.Component {
 
   showSearchHandler = () => {
     this.setState({ showSearchPage: true });
-  }
+  };
 
-  closeSearchHandler = () =>{
+  closeSearchHandler = () => {
     this.setState({ showSearchPage: false });
-  }
+  };
 
   render() {
     console.log(this.state);
     return (
-      // <Router>
-      //   <div>
-      //     {/* A <Switch> looks through its children <Route>s and
-      //       renders the first one that matches the current URL. */}
-      //     <Switch>
-      //       <Route path="/searchbook">
-      //         <SearchBook />
-      //       </Route>
-      //       <Route path="/">
-      //         <Home />
-      //       </Route>
-      //     </Switch>
-      //   </div>
-      // </Router>
-      <div className="app">
-        {this.state.showSearchPage ? (
-          <SearchBook closeSearch={this.closeSearchHandler}/>
-        ) : (
-          <div className="list-books">
-            <Header />
-            <Home
-              currentlyReading={this.state.currentlyReading}
-              read={this.state.read}
-              wantToRead={this.state.wantToRead}
-              updateShelf = {this.updateShelf}
-              showSearchPage = {this.showSearchHandler}
-            />
-          </div>
-        )}
-      </div>
+      <Router>
+        <div className="app">
+          <Switch>
+            <Route exact path="/">
+              <Home
+                currentlyReading={this.state.currentlyReading}
+                read={this.state.read}
+                wantToRead={this.state.wantToRead}
+                updateShelf={this.updateShelf}
+                showSearchPage={this.showSearchHandler}
+              />
+            </Route>
+            <Route path="/search">
+              <SearchBook closeSearch={this.closeSearchHandler} />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
 
-export default BooksApp;
+export default App;

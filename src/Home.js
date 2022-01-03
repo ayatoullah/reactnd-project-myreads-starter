@@ -1,9 +1,12 @@
 import React from "react";
 import Shelf from "./Shelf";
+import Header from "./Header";
+import {Link} from "react-router-dom";
 
 const Home = ({ currentlyReading, read, wantToRead, ...props }) => {
   return (
     <>
+      <Header />
       <div className="list-books-content">
         <div>
           <Shelf
@@ -11,7 +14,11 @@ const Home = ({ currentlyReading, read, wantToRead, ...props }) => {
             shelfName="currentlyReading"
             updateShelf={props.updateShelf}
           />
-          <Shelf books={read} shelfName="read" updateShelf={props.updateShelf} />
+          <Shelf
+            books={read}
+            shelfName="read"
+            updateShelf={props.updateShelf}
+          />
           <Shelf
             books={wantToRead}
             shelfName="wantToRead"
@@ -19,10 +26,8 @@ const Home = ({ currentlyReading, read, wantToRead, ...props }) => {
           />
         </div>
       </div>
-      <div className="open-search">
-        <button onClick={() => props.showSearchPage()}>
-          Add a book
-        </button>
+      <div >
+        <Link className="open-search" to="/search">Add a book</Link>
       </div>
     </>
   );
