@@ -64,6 +64,10 @@ class App extends React.Component {
     }
   };
 
+  searchHandler = () => {
+
+  }
+
   showSearchHandler = () => {
     this.setState({ showSearchPage: true });
   };
@@ -88,7 +92,7 @@ class App extends React.Component {
               />
             </Route>
             <Route path="/search">
-              <SearchBook closeSearch={this.closeSearchHandler} />
+              <SearchBook closeSearch={this.closeSearchHandler} search={this.searchHanler}/>
             </Route>
           </Switch>
         </div>

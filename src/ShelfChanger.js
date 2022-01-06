@@ -1,5 +1,3 @@
-import React from "react";
-
 const ShelfChanger = ({ updateShelf, book }) => {
     const updateShelfHandler = (e) => {
         let fromShelf = book.shelf;
