@@ -3,7 +3,7 @@ import React from "react";
 import "./App.css";
 import Home from "./Home";
 import SearchBook from "./SearchBook";
-import { getAll, update } from "./BooksAPI";
+import { getAll, update, search } from "./BooksAPI";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 class App extends React.Component {
@@ -22,6 +22,7 @@ class App extends React.Component {
       wantToRead: [],
       showSearchPage: false,
       books: [],
+      searchResult : []
     };
   }
   componentDidMount() {
@@ -63,8 +64,15 @@ class App extends React.Component {
     }
   };
 
-  searchHandler = () => {
+  searchHandler = (text) => {
+    let searchResult = [];
 
+    search(text).then(res => {
+      this.setState({
+        ...this.state,
+        searchResult : res
+      });
+    })
   }
 
 
@@ -84,7 +92,7 @@ class App extends React.Component {
               />
             </Route>
             <Route path="/search">
-              <SearchBook  search={this.searchHanler}/>
+              <SearchBook  search={this.searchHandler} searchResult={this.state.searchResult}/>
             </Route>
           </Switch>
         </div>
