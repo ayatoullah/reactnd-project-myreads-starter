@@ -10,7 +10,6 @@ class App extends React.Component {
   constructor() {
     super();
     this.updateShelf = this.updateShelf.bind(this);
-    this.showSearchHandler = this.showSearchHandler.bind(this);
     this.state = {
       /**
        * TODO: Instead of using this state variable to keep track of which page
@@ -68,13 +67,7 @@ class App extends React.Component {
 
   }
 
-  showSearchHandler = () => {
-    this.setState({ showSearchPage: true });
-  };
 
-  closeSearchHandler = () => {
-    this.setState({ showSearchPage: false });
-  };
 
   render() {
     console.log(this.state);
@@ -88,11 +81,10 @@ class App extends React.Component {
                 read={this.state.read}
                 wantToRead={this.state.wantToRead}
                 updateShelf={this.updateShelf}
-                showSearchPage={this.showSearchHandler}
               />
             </Route>
             <Route path="/search">
-              <SearchBook closeSearch={this.closeSearchHandler} search={this.searchHanler}/>
+              <SearchBook  search={this.searchHanler}/>
             </Route>
           </Switch>
         </div>
