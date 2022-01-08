@@ -1,6 +1,7 @@
 import React from "react";
-import { Link } from 'react-router-dom'
-const SearchBook = ({search, searchResult}) => {
+import { Link } from 'react-router-dom';
+import Book from './Book';
+const SearchBook = ({search, searchResult, updateShelf}) => {
   let searchHandler = (e) => search(e.target.value);
   console.log("searchResult", searchResult);
   return (
@@ -25,7 +26,12 @@ const SearchBook = ({search, searchResult}) => {
         </div>
       </div>
       <div className="search-books-results">
-        <ol className="books-grid" />
+        <ol className="books-grid" >
+          {searchResult.length <= 0 && <p>No results for your search</p>}
+          {searchResult.length > 0  &&  searchResult.map((book) => (
+            <Book key={book.id} book={book} updateShelf={updateShelf} />
+          ))}
+        </ol>
       </div>
     </div>
   );

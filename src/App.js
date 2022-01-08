@@ -20,6 +20,7 @@ class App extends React.Component {
       currentlyReading: [],
       read: [],
       wantToRead: [],
+      none: [],
       showSearchPage: false,
       books: [],
       searchResult : []
@@ -27,6 +28,7 @@ class App extends React.Component {
   }
   componentDidMount() {
     getAll().then((res) =>
+   { console.log("getAll", res);
       this.setState({
         ...this.state,
         books: res,
@@ -35,14 +37,16 @@ class App extends React.Component {
         ),
         read: res.filter((book) => book.shelf === "read"),
         wantToRead: res.filter((book) => book.shelf === "wantToRead"),
-      })
+      })}
     );
   }
 
   updateShelf = (fromShelf, toShelf, book) => {
+    console.log("none",this.state["none"]);
     book.shelf = toShelf;
     if (toShelf === "none") {
       return update(toShelf, book).then((res) => {
+
         this.setState({
           ...this.state,
           [fromShelf]: [
@@ -66,13 +70,25 @@ class App extends React.Component {
 
   searchHandler = (text) => {
     let searchResult = [];
-
-    search(text).then(res => {
+    if(text.length > 0) {
+      search(text).then(res => {
+        this.setState({
+          ...this.state,
+          searchResult : res
+        });
+      }, err => {
+        this.setState({
+          ...this.state,
+          searchResult : []
+        });
+      })
+    } else {
       this.setState({
         ...this.state,
-        searchResult : res
+        searchResult : []
       });
-    })
+    }
+
   }
 
 
@@ -92,7 +108,9 @@ class App extends React.Component {
               />
             </Route>
             <Route path="/search">
-              <SearchBook  search={this.searchHandler} searchResult={this.state.searchResult}/>
+              <SearchBook  search={this.searchHandler}
+                           searchResult={this.state.searchResult}
+                           updateShelf={this.updateShelf}/>
             </Route>
           </Switch>
         </div>
