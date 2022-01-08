@@ -5,12 +5,11 @@ const Book = ({ book, updateShelf }) => {
   const bookCover = (
     <div
       className="book-cover"
-      style={{
+    >
+      <img style={{
         width: 128,
-        height: 193,
-        backgroundImage: `url(${book.imageLinks.thumbnail})`,
-      }}
-    />
+        height: 193}} src={book.imageLinks.thumbnail} alt={book.description}/>
+    </div>
   );
 
   const bookTitle = <div className="book-title">{book.title}</div>;
