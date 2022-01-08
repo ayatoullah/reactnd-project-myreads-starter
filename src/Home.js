@@ -8,23 +8,21 @@ const Home = ({ currentlyReading, read, wantToRead, ...props }) => {
     <>
       <Header />
       <div className="list-books-content">
-        <div>
-          <Shelf
-            books={currentlyReading}
-            shelfName="currentlyReading"
-            updateShelf={props.updateShelf}
-          />
-          <Shelf
-            books={read}
-            shelfName="read"
-            updateShelf={props.updateShelf}
-          />
-          <Shelf
-            books={wantToRead}
-            shelfName="wantToRead"
-            updateShelf={props.updateShelf}
-          />
-        </div>
+        <Shelf
+          books={currentlyReading}
+          shelfName="currentlyReading"
+          updateShelf={props.updateShelf}
+        />
+        <Shelf
+          books={read}
+          shelfName="read"
+          updateShelf={props.updateShelf}
+        />
+        <Shelf
+          books={wantToRead}
+          shelfName="wantToRead"
+          updateShelf={props.updateShelf}
+        />
       </div>
       <div >
         <Link className="open-search" to="/search">Add a book</Link>
