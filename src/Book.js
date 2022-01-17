@@ -3,12 +3,17 @@ import ShelfChanger from "./ShelfChanger";
 
 const Book = ({ book, updateShelf }) => {
   const bookCover = (
-    <div
-      className="book-cover"
-    >
-      <img style={{
-        width: 128,
-        height: 193}} src={book.imageLinks.thumbnail} alt={book.description}/>
+    <div className="book-cover">
+      {
+        <img
+          style={{
+            width: 128,
+            height: 193,
+          }}
+          src={(book.imageLinks === null || book.imageLinks === undefined) ? "./icons/image-not-found.svg" : book.imageLinks.thumbnail}
+          alt={book.description}
+        />
+      }
     </div>
   );
 
@@ -26,7 +31,7 @@ const Book = ({ book, updateShelf }) => {
       <div className="book">
         <div className="book-top">
           {bookCover}
-          <ShelfChanger book = {book} updateShelf={updateShelf} />
+          <ShelfChanger book={book} updateShelf={updateShelf} />
         </div>
         {bookTitle}
         {bookAuthors}
