@@ -10,7 +10,7 @@ const Book = ({ book, updateShelf }) => {
             width: 128,
             height: 193,
           }}
-          src={(book.imageLinks === null || book.imageLinks === undefined) ? "./icons/image-not-found.svg" : book.imageLinks.thumbnail}
+          src={(book.imageLinks === null || book.imageLinks === undefined) ? "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg" : book.imageLinks.thumbnail}
           alt={book.description}
         />
       }
