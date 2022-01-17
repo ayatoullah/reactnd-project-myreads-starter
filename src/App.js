@@ -5,6 +5,8 @@ import Home from "./Home";
 import SearchBook from "./SearchBook";
 import { getAll, update, search } from "./BooksAPI";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import NotFound from "./NotFound";
+import history from "./history";
 
 class App extends React.Component {
   constructor() {
@@ -23,12 +25,12 @@ class App extends React.Component {
       none: [],
       showSearchPage: false,
       books: [],
-      searchResult : []
+      searchResult: [],
     };
   }
   componentDidMount() {
-    getAll().then((res) =>
-   { console.log("getAll", res);
+    getAll().then((res) => {
+      console.log("getAll", res);
       this.setState({
         ...this.state,
         books: res,
@@ -37,16 +39,15 @@ class App extends React.Component {
         ),
         read: res.filter((book) => book.shelf === "read"),
         wantToRead: res.filter((book) => book.shelf === "wantToRead"),
-      })}
-    );
+      });
+    });
   }
 
   updateShelf = (fromShelf, toShelf, book) => {
-    console.log("none",this.state["none"]);
+    console.log("none", this.state["none"]);
     book.shelf = toShelf;
     if (toShelf === "none") {
       return update(toShelf, book).then((res) => {
-
         this.setState({
           ...this.state,
           [fromShelf]: [
@@ -70,33 +71,33 @@ class App extends React.Component {
 
   searchHandler = (text) => {
     let searchResult = [];
-    if(text.length > 0) {
-      search(text).then(res => {
-        this.setState({
-          ...this.state,
-          searchResult : res
-        });
-      }, err => {
-        this.setState({
-          ...this.state,
-          searchResult : []
-        });
-      })
+    if (text.length > 0) {
+      search(text).then(
+        (res) => {
+          this.setState({
+            ...this.state,
+            searchResult: res,
+          });
+        },
+        (err) => {
+          this.setState({
+            ...this.state,
+            searchResult: [],
+          });
+        }
+      );
     } else {
       this.setState({
         ...this.state,
-        searchResult : []
+        searchResult: [],
       });
     }
-
-  }
-
-
+  };
 
   render() {
     console.log(this.state);
     return (
-      <Router>
+      <Router history={history}>
         <div className="app">
           <Switch>
             <Route exact path="/">
@@ -108,9 +109,14 @@ class App extends React.Component {
               />
             </Route>
             <Route path="/search">
-              <SearchBook  search={this.searchHandler}
-                           searchResult={this.state.searchResult}
-                           updateShelf={this.updateShelf}/>
+              <SearchBook
+                search={this.searchHandler}
+                searchResult={this.state.searchResult}
+                updateShelf={this.updateShelf}
+              />
+            </Route>
+            <Route path="*">
+              <NotFound />
             </Route>
           </Switch>
         </div>
