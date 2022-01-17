@@ -2,7 +2,7 @@ const ShelfChanger = ({ updateShelf, book }) => {
 
   const updateShelfHandler = (e) => {
       let fromShelf = !book.shelf? "none" : book.shelf;
-      updateShelf( fromShelf, e.target.value, book );
+      updateShelf( fromShelf, e.target.value, book);
   }
   return (
     <div className="book-shelf-changer">
